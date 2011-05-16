@@ -33,26 +33,15 @@ function Player:update(dt)
    end
       
    -- handle rotation
-   if player.orientation > 2 * math.pi then
-      player.orientation = player.orientation % (2 * math.pi)
-   end
+   player.orientation = player.orientation % (2 * math.pi)
    
    -- handle movement
    player.y = player.y - (player.velocity * math.cos(player.orientation))
    player.x = player.x + (player.velocity * math.sin(player.orientation))
    
    -- handle wrapping
-   if player.x > love.graphics.getWidth() then
-      player.x = player.x - love.graphics.getWidth()
-   elseif player.x < 0 then
-      player.x = player.x + love.graphics.getWidth()
-   end
-   
-   if player.y > love.graphics.getHeight() then
-      player.y = player.y - love.graphics.getHeight()
-   elseif player.y < 0 then
-      player.y = player.y + love.graphics.getHeight()
-   end
+   player.x = player.x % love.graphics.getWidth()
+   player.y = player.y % love.graphics.getHeight()
 end
 
 function love.load()
