@@ -68,7 +68,7 @@ function Player:update(dt)
    
    -- remove any shots which are too old
    for i in pairs(self.shots) do
-      if self.shots[i].distance_travelled > 750 then
+      if self.shots[i]:shouldBeRemoved() then
          table.remove(self.shots, i)
       end
    end

@@ -28,4 +28,8 @@ function Shot:draw()
    love.graphics.circle('fill', self.location.x, self.location.y, 2.5)
 end
 
+function Shot:shouldBeRemoved()
+   return self.distance_travelled > 750
+end
+
 Shot.__index = Shot
