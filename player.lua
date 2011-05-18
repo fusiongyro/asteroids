@@ -3,7 +3,7 @@ module(..., package.seeall)
 require 'shot'
 
 Player = {}
-function Player:new(o)
+function new(o)
    -- set up the player at the center of the screen
    o = o or {}
 
@@ -22,13 +22,12 @@ function Player:new(o)
                          6, 31)
    end)
 
-   setmetatable(o, self) 
-   self.__index = self
+   setmetatable(o, Player) 
    return o
 end
 
 function Player:shoot()
-   self.shots[#self.shots+1] = shot.Shot:new({}, self)
+   self.shots[#self.shots+1] = shot.new({}, self)
 end
 
 function Player:draw()
@@ -74,3 +73,5 @@ function Player:update(dt)
       end
    end
 end
+
+Player.__index = Player

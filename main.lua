@@ -13,7 +13,7 @@ function love.keyreleased(key)
 end
 
 function love.load()
-   thePlayer = player.Player:new()
+   thePlayer = player.new()
 end
 
 function love.update(dt)

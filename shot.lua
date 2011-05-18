@@ -1,7 +1,7 @@
 module(..., package.seeall)
 
 Shot   = {}
-function Shot:new(o, player)
+function new(o, player)
    o = o or {}
    
    o.origin             = { x = player.x, y = player.y }
@@ -10,8 +10,7 @@ function Shot:new(o, player)
    o.player             = player
    o.distance_travelled = 0
    
-   setmetatable(o, self)
-   self.__index = self
+   setmetatable(o, Shot)
    
    return o
 end
@@ -28,3 +27,5 @@ end
 function Shot:draw()
    love.graphics.circle('fill', self.location.x, self.location.y, 2.5)
 end
+
+Shot.__index = Shot
