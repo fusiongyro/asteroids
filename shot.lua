@@ -1,14 +1,13 @@
 module(..., package.seeall)
 
 Shot   = {}
-function new(o, player)
-   o = o or {}
-   
-   o.origin             = { x = player.x, y = player.y }
-   o.location           = { x = player.x, y = player.y }
-   o.orientation        = player.orientation
-   o.player             = player
-   o.distance_travelled = 0
+function new(player)
+   o = { angle      = player.angle,
+         player     = player,
+         travelled  = 0 }
+
+   o.origin   = { x = player.x, y = player.y }
+   o.location = { x = player.x, y = player.y }
    
    setmetatable(o, Shot)
    
@@ -16,9 +15,9 @@ function new(o, player)
 end
 
 function Shot:update(dt)
-   self.distance_travelled = self.distance_travelled + dt * 500
-   self.location.x = self.location.x + math.sin(self.orientation) * dt * 500
-   self.location.y = self.location.y - math.cos(self.orientation) * dt * 500
+   self.travelled = self.travelled + dt * 500
+   self.location.x = self.location.x + math.sin(self.angle) * dt * 500
+   self.location.y = self.location.y - math.cos(self.angle) * dt * 500
    
    self.location.x = self.location.x % love.graphics.getWidth()
    self.location.y = self.location.y % love.graphics.getHeight()
@@ -29,7 +28,7 @@ function Shot:draw()
 end
 
 function Shot:shouldBeRemoved()
-   return self.distance_travelled > 750
+   return self.travelled > 750
 end
 
 Shot.__index = Shot

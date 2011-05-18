@@ -22,4 +22,5 @@ end
 
 function love.draw()
    thePlayer:draw()
+   --love.graphics.print('FPS: '.. love.timer.getFPS(), 100, 100)
 end

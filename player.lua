@@ -8,11 +8,15 @@ function new(o)
    o = o or {}
 
    o.radius = 10
+   
+   -- start at the center of the screen
    o.x = love.graphics.getWidth() / 2 
    o.y = love.graphics.getHeight() / 2
+   
    o.velocity = 0
-   o.orientation = 0
+   o.angle = 0
    o.shots = {}
+   
    o.image = love.graphics.newFramebuffer(32, 32)
    o.image:renderTo(function()
       love.graphics.setLineWidth(2.5)
@@ -27,15 +31,13 @@ function new(o)
 end
 
 function Player:shoot()
-   self.shots[#self.shots+1] = shot.new({}, self)
+   self.shots[#self.shots+1] = shot.new(self)
 end
 
 function Player:draw()
-   love.graphics.draw(self.image, self.x, self.y, self.orientation, 1, 1, 16, 16)
+   love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, 16, 16)
    
-   for _, shot in ipairs(self.shots) do
-      shot:draw()
-   end
+   for _, shot in ipairs(self.shots) do shot:draw() end
 end
 
 function Player:update(dt)
@@ -45,26 +47,24 @@ function Player:update(dt)
    elseif love.keyboard.isDown('down') then
       self.velocity = self.velocity - dt * 3
    elseif love.keyboard.isDown('left') then
-      self.orientation = self.orientation - dt * 3
+      self.angle = self.angle - dt * 3
    elseif love.keyboard.isDown('right') then
-      self.orientation = self.orientation + dt * 3
+      self.angle = self.angle + dt * 3
    end
       
    -- handle rotation
-   self.orientation = self.orientation % (2 * math.pi)
+   self.angle = self.angle % (2 * math.pi)
    
    -- handle movement
-   self.y = self.y - (self.velocity * math.cos(self.orientation))
-   self.x = self.x + (self.velocity * math.sin(self.orientation))
+   self.y = self.y - (self.velocity * math.cos(self.angle))
+   self.x = self.x + (self.velocity * math.sin(self.angle))
    
    -- handle wrapping
    self.x = self.x % love.graphics.getWidth()
    self.y = self.y % love.graphics.getHeight()
    
    -- now handle the shots
-   for _, shot in ipairs(self.shots) do
-      shot:update(dt)
-   end
+   for _, shot in ipairs(self.shots) do shot:update(dt) end
    
    -- remove any shots which are too old
    for i in pairs(self.shots) do
