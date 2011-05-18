@@ -35,6 +35,7 @@ function Player:shoot()
 end
 
 function Player:draw()
+   love.graphics.setColor(255, 255, 255, 255)
    love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, 16, 16)
    
    for _, shot in ipairs(self.shots) do shot:draw() end

@@ -1,4 +1,5 @@
 require 'player'
+require 'starfield'
 
 function rotate(p, theta)
    local x = p.x * math.cos(theta) - p.y * math.sin(theta)
@@ -13,14 +14,18 @@ function love.keyreleased(key)
 end
 
 function love.load()
+   love.graphics.setMode(1024, 768)
+   starfield.load()
    thePlayer = player.new()
 end
 
 function love.update(dt)
+   starfield.update(dt)
    thePlayer:update(dt)
 end
 
 function love.draw()
+   starfield.draw()
    thePlayer:draw()
    --love.graphics.print('FPS: '.. love.timer.getFPS(), 100, 100)
 end
