@@ -1,5 +1,6 @@
 module(..., package.seeall)
 
+require 'vector'
 require 'shot'
 
 Player = {}
@@ -13,7 +14,7 @@ function new(o)
    o.x = love.graphics.getWidth() / 2 
    o.y = love.graphics.getHeight() / 2
    
-   o.velocity = 0
+   o.velocity = vector.newWithMagnitudeAngle(0, 0)
    o.angle = 0
    o.shots = {}
    
@@ -45,9 +46,9 @@ end
 function Player:update(dt)
    -- handle acceleration/deceleration
    if love.keyboard.isDown('up') then
-      self.velocity = self.velocity + dt * 3
+      self.velocity = self.velocity:add(vector.newWithMagnitudeAngle(-dt * 3, -self.angle))
    elseif love.keyboard.isDown('down') then
-      self.velocity = math.max(self.velocity - dt * 3, 0)
+      self.velocity = self.velocity:add(vector.newWithMagnitudeAngle(dt * 3, -self.angle))
    elseif love.keyboard.isDown('left') then
       self.angle = self.angle - dt * 3
    elseif love.keyboard.isDown('right') then
@@ -58,8 +59,10 @@ function Player:update(dt)
    self.angle = self.angle % (2 * math.pi)
    
    -- handle movement
-   self.y = self.y - (self.velocity * math.cos(self.angle))
-   self.x = self.x + (self.velocity * math.sin(self.angle))
+   local position = vector.newWithXY(self.y, self.x)
+   position = position:add(self.velocity)
+   self.x = position.y
+   self.y = position.x
    
    -- handle wrapping
    self.x = self.x % love.graphics.getWidth()
