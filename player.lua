@@ -24,7 +24,7 @@ function new(o)
                         26, 31, 
                         16,  2, 
                          6, 31 }
-      love.graphics.polygon('fill', polygon)
+      love.graphics.polygon('line', polygon)
    end)
 
    setmetatable(o, Player) 

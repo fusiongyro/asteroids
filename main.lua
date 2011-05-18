@@ -1,12 +1,14 @@
 require 'player'
 require 'starfield'
 
+-- some utility functions
 function rotate(p, theta)
    local x = p.x * math.cos(theta) - p.y * math.sin(theta)
    local y = p.x * math.sin(theta) - p.y * math.cos(theta)
    return { x = x, y = y }
 end
 
+-- LÖVE callbacks
 function love.keyreleased(key)
    if (key == ' ') then
       thePlayer:shoot()
