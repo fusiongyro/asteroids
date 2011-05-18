@@ -32,5 +32,5 @@ function newStar(width, height)
    return { x          = math.random(0, width - 1),
             y          = math.random(0, height - 1),
             brightness = math.random() * 2 * math.pi,
-            rate       = math.random(6) }
+            rate       = math.random(4) }
 end

@@ -20,10 +20,11 @@ function new(o)
    o.image = love.graphics.newFramebuffer(32, 32)
    o.image:renderTo(function()
       love.graphics.setLineWidth(2.5)
-      love.graphics.line(6, 31, 
+      local polygon = {  6, 31, 
                         26, 31, 
                         16,  2, 
-                         6, 31)
+                         6, 31 }
+      love.graphics.polygon('fill', polygon)
    end)
 
    setmetatable(o, Player) 
@@ -46,7 +47,7 @@ function Player:update(dt)
    if love.keyboard.isDown('up') then
       self.velocity = self.velocity + dt * 3
    elseif love.keyboard.isDown('down') then
-      self.velocity = self.velocity - dt * 3
+      self.velocity = math.max(self.velocity - dt * 3, 0)
    elseif love.keyboard.isDown('left') then
       self.angle = self.angle - dt * 3
    elseif love.keyboard.isDown('right') then
