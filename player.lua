@@ -1,3 +1,7 @@
+module(..., package.seeall)
+
+require 'shot'
+
 Player = {}
 function Player:new(o)
    -- set up the player at the center of the screen
@@ -11,10 +15,11 @@ function Player:new(o)
    o.shots = {}
    o.image = love.graphics.newFramebuffer(32, 32)
    o.image:renderTo(function()
-      love.graphics.setLineWidth(2)
-      love.graphics.line(0, 32, 20, 32)
-      love.graphics.line(20, 32, 10, 2)
-      love.graphics.line(10, 2, 0, 32)
+      love.graphics.setLineWidth(2.5)
+      love.graphics.line(6, 31, 
+                        26, 31, 
+                        16,  2, 
+                         6, 31)
    end)
 
    setmetatable(o, self) 
@@ -23,13 +28,13 @@ function Player:new(o)
 end
 
 function Player:shoot()
-   o.shots[#o.shots+1] = Shot:new(self)
+   self.shots[#self.shots+1] = shot.Shot:new({}, self)
 end
 
 function Player:draw()
-   love.graphics.draw(self.image, self.x, self.y, self.orientation)
+   love.graphics.draw(self.image, self.x, self.y, self.orientation, 1, 1, 16, 16)
    
-   for _, shot in ipairs(player.shots) do
+   for _, shot in ipairs(self.shots) do
       shot:draw()
    end
 end
@@ -37,28 +42,35 @@ end
 function Player:update(dt)
    -- handle acceleration/deceleration
    if love.keyboard.isDown('up') then
-      player.velocity = player.velocity + dt * 2
+      self.velocity = self.velocity + dt * 3
    elseif love.keyboard.isDown('down') then
-      player.velocity = player.velocity - dt * 2
+      self.velocity = self.velocity - dt * 3
    elseif love.keyboard.isDown('left') then
-      player.orientation = player.orientation - dt
+      self.orientation = self.orientation - dt * 3
    elseif love.keyboard.isDown('right') then
-      player.orientation = player.orientation + dt
+      self.orientation = self.orientation + dt * 3
    end
       
    -- handle rotation
-   player.orientation = player.orientation % (2 * math.pi)
+   self.orientation = self.orientation % (2 * math.pi)
    
    -- handle movement
-   player.y = player.y - (player.velocity * math.cos(player.orientation))
-   player.x = player.x + (player.velocity * math.sin(player.orientation))
+   self.y = self.y - (self.velocity * math.cos(self.orientation))
+   self.x = self.x + (self.velocity * math.sin(self.orientation))
    
    -- handle wrapping
-   player.x = player.x % love.graphics.getWidth()
-   player.y = player.y % love.graphics.getHeight()
+   self.x = self.x % love.graphics.getWidth()
+   self.y = self.y % love.graphics.getHeight()
    
    -- now handle the shots
-   for _, shot in ipairs(player.shots) do
+   for _, shot in ipairs(self.shots) do
       shot:update(dt)
+   end
+   
+   -- remove any shots which are too old
+   for i in pairs(self.shots) do
+      if self.shots[i].distance_travelled > 750 then
+         table.remove(self.shots, i)
+      end
    end
 end
