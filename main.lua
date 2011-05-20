@@ -1,5 +1,6 @@
 require 'player'
 require 'starfield'
+require 'asteroid'
 
 -- some utility functions
 function rotate(p, theta)
@@ -19,15 +20,18 @@ function love.load()
    love.graphics.setMode(1024, 768)
    starfield.load()
    thePlayer = player.new()
+   asteroid.load()
 end
 
 function love.update(dt)
    starfield.update(dt)
    thePlayer:update(dt)
+   asteroid.update(dt)
 end
 
 function love.draw()
    starfield.draw()
    thePlayer:draw()
+   asteroid.draw()
    --love.graphics.print('FPS: '.. love.timer.getFPS(), 100, 100)
 end

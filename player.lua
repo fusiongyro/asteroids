@@ -2,6 +2,7 @@ module(..., package.seeall)
 
 require 'vector'
 require 'shot'
+require 'physics'
 
 Player = {}
 function new(o)
@@ -59,10 +60,7 @@ function Player:update(dt)
    self.angle = self.angle % (2 * math.pi)
    
    -- handle movement
-   local position = vector.newWithXY(self.y, self.x)
-   position = position:add(self.velocity)
-   self.x = position.y
-   self.y = position.x
+   self.x, self.y = physics.update(self.x, self.y, self.velocity, dt)
    
    -- handle wrapping
    self.x = self.x % love.graphics.getWidth()
