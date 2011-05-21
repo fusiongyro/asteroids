@@ -1,6 +1,9 @@
 require 'player'
 require 'starfield'
 require 'asteroid'
+require 'quadtree/quadtree'
+
+local QuadTree = quadtree.QuadTree
 
 -- some utility functions
 function rotate(p, theta)
@@ -24,14 +27,19 @@ function love.load()
 end
 
 function love.update(dt)
+   collisionDetector = QuadTree.new(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+   for i = 1, 6 do collisionDetector:subdivide() end
+   collidableObjects = {}
    starfield.update(dt)
    thePlayer:update(dt)
    asteroid.update(dt)
+   physics.handleCollisions()
 end
 
 function love.draw()
    starfield.draw()
    thePlayer:draw()
    asteroid.draw()
+   love.graphics.setColor(255,255,255,255)
    --love.graphics.print('FPS: '.. love.timer.getFPS(), 100, 100)
 end
