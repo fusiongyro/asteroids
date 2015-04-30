@@ -20,7 +20,7 @@ function new(o)
    o.shots = {}
    o.alive = true
    
-   o.image = love.graphics.newFramebuffer(32, 32)
+   o.image = love.graphics.newCanvas(32, 32)
    o.image:renderTo(function()
       love.graphics.setLineWidth(2.5)
       local polygon = {  6, 31, 
@@ -29,10 +29,10 @@ function new(o)
                          6, 31 }
       love.graphics.polygon('line', polygon)
    end)
-   o.gameover = love.graphics.newFramebuffer()
+   o.gameover = love.graphics.newCanvas()
    o.gameover:renderTo(function()
       love.graphics.setColor(255, 255, 255, 255)
-      love.graphics.setFont(96)
+      love.graphics.setFont(love.graphics.newFont(96))
       love.graphics.printf('GAME OVER', 200, 300, 10000, 'left')
    end)
 

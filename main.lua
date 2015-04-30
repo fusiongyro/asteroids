@@ -20,7 +20,7 @@ function love.keyreleased(key)
 end
 
 function love.load()
-   love.graphics.setMode(1024, 768)
+   love.window.setMode(1024, 768)
    starfield.load()
    thePlayer = player.new()
    asteroid.load()
